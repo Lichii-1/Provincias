@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provincias de Argentina - Aprende Jugando</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Provincias de Argentina</h1>
+        <nav>
+            <button class="tab-btn active" data-tab="info">Información</button>
+            <button class="tab-btn" data-tab="mapa">Mapa Interactivo</button>
+            <button class="tab-btn" data-tab="juego">Juego Cronometrado</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Tab 1: Información de Provincias -->
+        <section id="info" class="tab-content active">
+            <div class="info-container">
+                <div class="summary-section">
+                    <h2>Resumen de las Provincias Argentinas</h2>
+                    <div class="summary-grid">
+                        <div class="summary-card">
+                            <h3>Datos Generales</h3>
+                            <ul>
+                                <li><strong>Total de provincias:</strong> 23 + Ciudad Autónoma de Buenos Aires</li>
+                                <li><strong>Superficie total:</strong> 2.780.400 km²</li>
+                                <li><strong>Población:</strong> ~45 millones de habitantes</li>
+                                <li><strong>Idioma oficial:</strong> Español</li>
+                                <li><strong>Moneda:</strong> Peso Argentino</li>
+                            </ul>
+                        </div>
+                        <div class="summary-card">
+                            <h3>Regiones Geográficas</h3>
+                            <ul>
+                                <li><strong>Noroeste (NOA):</strong> Jujuy, Salta, Tucumán, Catamarca, La Rioja, Santiago del Estero</li>
+                                <li><strong>Noreste (NEA):</strong> Formosa, Chaco, Misiones, Corrientes</li>
+                                <li><strong>Cuyo:</strong> Mendoza, San Juan, San Luis</li>
+                                <li><strong>Pampeana:</strong> Buenos Aires, Córdoba, Santa Fe, Entre Ríos, La Pampa</li>
+                                <li><strong>Patagonia:</strong> Neuquén, Río Negro, Chubut, Santa Cruz, Tierra del Fuego</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Información Detallada por Provincia</h2>
+                <div class="provinces-list" id="provinces-list">
+                    <!-- Se llena dinámicamente con JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 2: Mapa Interactivo -->
+        <section id="mapa" class="tab-content">
+            <div class="map-container">
+                <div class="map-instructions">
+                    <h2>Mapa Interactivo</h2>
+                    <p>Hacé clic en una provincia para comenzar. Primero ingresá el nombre de la provincia, si es correcto pasará a amarillo. Luego ingresá la capital, si es correcta pasará a verde.</p>
+                    <div class="legend">
+                        <span class="legend-item"><span class="color-box gray"></span> Sin completar</span>
+                        <span class="legend-item"><span class="color-box yellow"></span> Nombre correcto</span>
+                        <span class="legend-item"><span class="color-box green"></span> Completo</span>
+                    </div>
+                    <div class="progress-info">
+                        <p>Progreso: <span id="map-progress">0</span>/24 provincias completadas</p>
+                        <button id="reset-map-btn" class="btn-secondary">Reiniciar</button>
+                    </div>
+                </div>
+                <div class="map-wrapper">
+                    <div id="argentina-map"></div>
+                </div>
+            </div>
+            
+            <!-- Modal para ingresar respuestas -->
+            <div id="answer-modal" class="modal hidden">
+                <div class="modal-content">
+                    <h3 id="modal-title">Ingresá el nombre de la provincia</h3>
+                    <input type="text" id="answer-input" placeholder="Escribí tu respuesta..." autocomplete="off">
+                    <div class="modal-buttons">
+                        <button id="submit-answer" class="btn-primary">Verificar</button>
+                        <button id="cancel-answer" class="btn-secondary">Cancelar</button>
+                    </div>
+                    <p id="modal-feedback" class="feedback"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 3: Juego Cronometrado -->
+        <section id="juego" class="tab-content">
+            <div class="game-container">
+                <div class="game-header">
+                    <h2>Juego Cronometrado</h2>
+                    <div class="game-stats">
+                        <div class="stat-box">
+                            <span class="stat-label">Tiempo</span>
+                            <span id="timer" class="stat-value">00:00</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Correctas</span>
+                            <span id="correct-count" class="stat-value">0/24</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Racha</span>
+                            <span id="streak" class="stat-value">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-area">
+                    <div id="game-start-screen" class="game-screen">
+                        <h3>¿Listo para el desafío?</h3>
+                        <p>Se te mostrarán provincias aleatorias. Tenés que escribir el nombre y la capital de cada una lo más rápido posible.</p>
+                        <button id="start-game-btn" class="btn-primary btn-large">Comenzar Juego</button>
+                    </div>
+
+                    <div id="game-play-screen" class="game-screen hidden">
+                        <div class="game-map-wrapper">
+                            <div id="game-map"></div>
+                        </div>
+                        <div class="game-input-area">
+                            <div class="input-group">
+                                <label for="province-input">Nombre de la Provincia:</label>
+                                <input type="text" id="province-input" placeholder="Escribí el nombre..." autocomplete="off">
+                                <span id="province-status" class="status-icon"></span>
+                            </div>
+                            <div class="input-group" id="capital-group">
+                                <label for="capital-input">Capital:</label>
+                                <input type="text" id="capital-input" placeholder="Escribí la capital..." autocomplete="off" disabled>
+                                <span id="capital-status" class="status-icon"></span>
+                            </div>
+                            <button id="next-province-btn" class="btn-primary hidden">Siguiente Provincia</button>
+                        </div>
+                    </div>
+
+                    <div id="game-end-screen" class="game-screen hidden">
+                        <h3>¡Juego Terminado!</h3>
+                        <div class="final-stats">
+                            <p>Tiempo total: <strong id="final-time">00:00</strong></p>
+                            <p>Provincias completadas: <strong id="final-score">0/24</strong></p>
+                            <p>Mejor racha: <strong id="final-streak">0</strong></p>
+                        </div>
+                        <button id="restart-game-btn" class="btn-primary btn-large">Jugar de Nuevo</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Desarrollado para aprender sobre las provincias de Argentina</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="map.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
